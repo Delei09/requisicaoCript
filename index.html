@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CoinMarkeupCap</title>
+        <meta charset="utf-8" >
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <table class="table" id="tabela">
+                <thead>  
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Moedas</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Data de Criação</th>
+                    </tr>
+                    
+                </thead>
+            </table>
+        </div>
+
+        <script type="text/javascript">
+            
+            const apikey = {
+                key: '3b165099-4266-4dde-aefa-9fa5b2ee7098'
+            }
+
+            fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' + apikey.key )
+            .then((response) => {
+                if(!response.ok) throw new Error('Erro ao executar a requisição, status' + response.status);
+                return response.json();
+            }).then((api) => {
+                const tagTBody = document.createElement('tbody') 
+                for(let i = 0; i < 10; i++){
+                    const  thNumero = document.createElement("th");
+                    thNumero.innerHTML = i + 1;
+                    thNumero.setAttribute('scope' , 'row')
+                    const  tdNome = document.createElement("td");
+                    tdNome.innerHTML = api.data[i].name
+                    const tdData = document.createElement("td")
+                    tdData.innerHTML = api.data[i].first_historical_data
+                    const tdSymbol = document.createElement("td")
+                    tdSymbol.innerHTML = api.data[i].symbol 
+                    const tr = document.createElement('tr')   
+                    tr.appendChild(thNumero)
+                    tr.appendChild(tdSymbol)
+                    tr.appendChild(tdNome)
+                    tr.appendChild(tdData)
+                    tagTBody.appendChild(tr)
+                }
+                document.querySelector('#tabela').append(tagTBody)
+            })
+            .catch((error) => {
+                console.log('to no catch')
+            });
+        </script>
+    </body>
+</html>
